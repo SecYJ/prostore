@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { APP_NAME } from "@/lib/constants";
 import { ROUTES } from "@/lib/constants/routes";
@@ -7,7 +8,7 @@ import Link from "next/link";
 
 const Header = () => {
     return (
-        <header className="wrapper grid grid-cols-[1fr_auto_auto] items-center gap-4 border-b">
+        <header className="wrapper grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 border-b">
             <Link href={ROUTES.HOME()} className="">
                 <Image
                     src="/images/logo.svg"
@@ -20,13 +21,15 @@ const Header = () => {
                     {APP_NAME}
                 </span>
             </Link>
+
+            <ModeToggle />
             <Button asChild variant="ghost">
                 <Link href={ROUTES.CART()}>
                     <ShoppingBag />
                     Cart
                 </Link>
             </Button>
-            <Button asChild variant="ghost">
+            <Button asChild>
                 <Link href={ROUTES.SIGN_IN()}>
                     <User />
                     Sign In
