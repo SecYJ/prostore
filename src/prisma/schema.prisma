@@ -6,8 +6,8 @@
 
 generator client {
     provider        = "prisma-client-js"
-    previewFeatures = []
-    seed            = "tsx src/prisma/seed.ts"
+    previewFeatures = ["driverAdapters"]
+    // seed            = "tsx src/prisma/seed.ts"
 }
 
 datasource db {

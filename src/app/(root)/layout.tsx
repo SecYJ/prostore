@@ -6,7 +6,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
     return (
         <div className="grid min-h-screen grid-rows-[auto_1fr_auto]">
             <Header />
-            {children}
+            <div className="wrapper flex-1">{children}</div>
             <Footer />
         </div>
     );

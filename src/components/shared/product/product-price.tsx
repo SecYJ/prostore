@@ -1,14 +1,17 @@
+import { cn } from "@/lib/utils";
+
 interface Props {
     price: number;
+    className?: string;
 }
 
-const ProductPrice = ({ price }: Props) => {
+const ProductPrice = ({ price, className }: Props) => {
     const [int, float] = price.toFixed(2).split(".");
 
     return (
-        <p>
+        <p className={cn("text-2xl", className)}>
             <span className="align-super text-xs">$</span>
-            <span className="text-2xl">{int}</span>
+            <span>{int}</span>
             <span className="align-super text-xs">.{float}</span>
         </p>
     );
