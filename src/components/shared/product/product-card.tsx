@@ -3,32 +3,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardHeader } from "../../ui/card";
 import ProductPrice from "./product-price";
-
-interface Props {
-    image: string;
-    brand: string;
-    name: string;
-    price: number;
-    rating: number;
-    stock: number;
-    slug: string;
-}
+import { Product } from "@/types";
 
 const ProductCard = ({
-    image,
+    images,
     brand,
     name,
     price,
     rating,
     stock,
     slug,
-}: Props) => {
+}: Product) => {
     return (
         <Card className="w-full max-w-sm">
             <CardHeader className="items-center p-0">
                 <Link href={ROUTES.PRODUCT_DETAIL(slug)}>
                     <Image
-                        src={image}
+                        src={images[0]}
                         alt={name}
                         width={300}
                         height={300}
@@ -47,7 +38,7 @@ const ProductCard = ({
                 <div className="flex items-center justify-between">
                     <p>{rating} Stars</p>
                     {stock > 0 ? (
-                        <ProductPrice price={price} />
+                        <ProductPrice price={Number(price)} />
                     ) : (
                         <p className="text-destructive">Out of Stock</p>
                     )}

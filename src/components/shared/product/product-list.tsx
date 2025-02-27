@@ -1,7 +1,7 @@
 import ProductCard from "./product-card";
-
+import { Product } from "@/types";
 interface Props {
-    data: any;
+    data: Product[];
     title?: string;
     limit?: number;
 }
@@ -14,17 +14,8 @@ const ProductList = ({ data, title, limit }: Props) => {
             <h2 className="h2-bold mb-4">{title}</h2>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-4">
                 {limitedData.length > 0 ? (
-                    limitedData.map((product: any) => (
-                        <ProductCard
-                            key={product.name}
-                            stock={product.stock}
-                            image={product.images[0]}
-                            brand={product.brand}
-                            name={product.name}
-                            price={product.price}
-                            rating={product.rating}
-                            slug={product.slug}
-                        />
+                    limitedData.map((product) => (
+                        <ProductCard key={product.name} {...product} />
                     ))
                 ) : (
                     <div>

@@ -1,7 +1,7 @@
 "use server";
 
-import { prisma } from "../prisma";
 import { LATEST_PRODUCTS_LIMIT } from "../constants";
+import { prisma } from "../prisma";
 
 export const getLatestProducts = async () => {
     const products = await prisma.product.findMany({
@@ -11,10 +11,9 @@ export const getLatestProducts = async () => {
         },
     });
 
-    // Convert Prisma Decimal objects to regular JavaScript numbers
     return products.map((product) => ({
         ...product,
-        price: parseFloat(product.price.toString()),
-        rating: parseFloat(product.rating.toString()),
+        price: product.price.toString(),
+        rating: product.rating.toString(),
     }));
 };
