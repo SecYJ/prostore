@@ -1,3 +1,4 @@
+import ProductImages from "@/components/shared/product/product-images";
 import ProductPrice from "@/components/shared/product/product-price";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,9 +9,9 @@ import { notFound } from "next/navigation";
 const ProductDetailPage = async ({
     params,
 }: {
-    params: { slug: Promise<string> };
+    params: Promise<{ slug: string }>;
 }) => {
-    const slug = await params.slug;
+    const { slug } = await params;
     const product = await getSingleProduct(slug);
 
     if (!product) notFound();
@@ -19,7 +20,9 @@ const ProductDetailPage = async ({
         <section>
             <div className="grid grid-cols-1 md:grid-cols-5">
                 {/* Images Column */}
-                <div className="col-span-2">{/* <Image  */}</div>
+                <div className="col-span-2">
+                    <ProductImages images={product.images} />
+                </div>
 
                 <div className="col-span-2 p-5">
                     <div className="flex flex-col gap-6">
