@@ -7,15 +7,16 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "postinstall": "prisma generate",
-        "prisma:generate": "prisma generate --schema ./src/prisma/schema.prisma",
-        "prisma:migrate:base": "prisma migrate dev --schema ./src/prisma/schema.prisma",
-        "prisma:migrate": "npx prisma migrate dev --schema ./src/prisma/schema.prisma --name ",
-        "prisma:studio": "npx prisma studio --schema ./src/prisma/schema.prisma",
+        "postinstall": "prisma generate --schema=./src/prisma/schema.prisma",
+        "prisma:generate": "prisma generate --schema=./src/prisma/schema.prisma",
+        "prisma:migrate:base": "prisma migrate dev --schema=./src/prisma/schema.prisma",
+        "prisma:migrate": "prisma migrate dev --schema=./src/prisma/schema.prisma --name ",
+        "prisma:studio": "prisma studio --schema=./src/prisma/schema.prisma",
         "prisma:seed": "tsx src/prisma/seed.ts",
-        "db:seed": "prisma db seed --schema ./src/prisma/schema.prisma"
+        "db:seed": "prisma db seed --schema=./src/prisma/schema.prisma"
     },
     "prisma": {
+        "schema": "./src/prisma/schema.prisma",
         "seed": "tsx src/prisma/seed.ts"
     },
     "dependencies": {
