@@ -1,3 +1,5 @@
+import { hashSync } from "bcrypt-ts-edge";
+
 const sampleData = {
     products: [
         {
@@ -101,6 +103,50 @@ const sampleData = {
             stock: 8,
             isFeatured: true,
             banner: null,
+        },
+    ],
+    users: [
+        {
+            name: "John Doe",
+            email: "john@example.com",
+            password: hashSync("password123", 10),
+            role: "user",
+            address: {
+                street: "123 Main St",
+                city: "Anytown",
+                state: "CA",
+                zipCode: "12345",
+                country: "USA",
+            },
+            paymentMethod: "credit_card",
+        },
+        {
+            name: "Admin User",
+            email: "admin@example.com",
+            password: hashSync("admin123", 10),
+            role: "admin",
+            address: {
+                street: "456 Admin Ave",
+                city: "Adminville",
+                state: "NY",
+                zipCode: "54321",
+                country: "USA",
+            },
+            paymentMethod: "paypal",
+        },
+        {
+            name: "Test User",
+            email: "test@example.com",
+            password: hashSync("test123", 10),
+            role: "user",
+            address: {
+                street: "456 Admin Ave",
+                city: "Adminville",
+                state: "NY",
+                zipCode: "54321",
+                country: "USA",
+            },
+            paymentMethod: null,
         },
     ],
 };
