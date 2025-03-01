@@ -7,17 +7,18 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ROUTES } from "@/lib/constants/routes";
+import { useSearchParams } from "next/navigation";
 
 const SignInForm = () => {
     const emailId = useId();
     const passwordId = useId();
-    const [state, action, isPending] = useActionState(signInAction, {
-        success: false,
-        message: "",
-    });
+    const [state, action, isPending] = useActionState(signInAction, null);
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl") ?? ROUTES.HOME();
 
     return (
         <form action={action}>
+            <input type="hidden" name="callbackUrl" value={callbackUrl} />
             <div className="space-y-6">
                 <div className="space-y-1">
                     <Label htmlFor={emailId}>Email</Label>
@@ -46,12 +47,9 @@ const SignInForm = () => {
                         {isPending ? "Signing In..." : "Sign In"}
                     </Button>
                 </div>
-                {/* <div className="text-center text-destructive">
-                    {!state?.success && <p>{state?.message}</p>}
-                </div> */}
-                {!state?.success && state.message && (
+                {!state?.success && state?.message && (
                     <div className="text-center text-destructive">
-                        {!state?.success && <p>{state?.message}</p>}
+                        <p>{state?.message}</p>
                     </div>
                 )}
                 <div className="text-center text-sm text-muted-foreground">

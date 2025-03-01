@@ -29,6 +29,7 @@ export const insertProductSchema = z.object({
 });
 
 export const signInSchema = z.object({
+    callbackUrl: z.string().optional(),
     email: z.string().email({ message: "Invalid email address" }),
     password: z
         .string()

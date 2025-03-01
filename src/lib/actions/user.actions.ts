@@ -1,8 +1,8 @@
 "use server";
 
 import { signIn, signOut } from "@/auth";
-import { signInSchema } from "../validators";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { signInSchema } from "../validators";
 
 export const signInAction = async (_: unknown, formData: FormData) => {
     const formValues = Object.fromEntries(formData.entries());
