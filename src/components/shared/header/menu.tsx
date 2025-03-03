@@ -8,10 +8,11 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { ROUTES } from "@/lib/constants/routes";
-import { EllipsisVertical, ShoppingBag, User } from "lucide-react";
+import { EllipsisVertical, ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import UserButton from "./user-button";
 
-const Menu = () => {
+const Menu = async () => {
     return (
         <div>
             <div className="hidden items-center gap-2 md:flex">
@@ -22,12 +23,7 @@ const Menu = () => {
                         Cart
                     </Link>
                 </Button>
-                <Button asChild>
-                    <Link href={ROUTES.SIGN_IN()}>
-                        <User />
-                        Sign In
-                    </Link>
-                </Button>
+                <UserButton />
             </div>
             <div className="md:hidden">
                 <Sheet>
@@ -47,12 +43,7 @@ const Menu = () => {
                                     Cart
                                 </Link>
                             </Button>
-                            <Button asChild>
-                                <Link href={ROUTES.SIGN_IN()}>
-                                    <User />
-                                    Sign In
-                                </Link>
-                            </Button>
+                            <UserButton />
                         </div>
                     </SheetContent>
                 </Sheet>
