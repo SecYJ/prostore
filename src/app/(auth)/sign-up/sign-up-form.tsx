@@ -67,11 +67,11 @@ const SignUpForm = () => {
                         {isPending ? "Signing Up..." : "Sign Up"}
                     </Button>
                 </div>
-                {/* {!state?.success && state?.message && (
+                {state?.message && (
                     <div className="text-center text-destructive">
                         <p>{state?.message}</p>
                     </div>
-                )} */}
+                )}
                 <div className="text-center text-sm text-muted-foreground">
                     Already have an account?{" "}
                     <Link
