@@ -1,18 +1,20 @@
 "use client";
 
-import { signInAction } from "@/lib/actions/user.actions";
-import { useActionState, useId } from "react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { signUpAction } from "@/lib/actions/user.actions";
 import { ROUTES } from "@/lib/constants/routes";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useActionState, useId } from "react";
 
-const SignInForm = () => {
+const SignUpForm = () => {
+    const nameId = useId();
     const emailId = useId();
     const passwordId = useId();
-    const [state, action, isPending] = useActionState(signInAction, null);
+    const confirmPasswordId = useId();
+    const [state, action, isPending] = useActionState(signUpAction, null);
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") ?? ROUTES.HOME();
 
@@ -20,6 +22,15 @@ const SignInForm = () => {
         <form action={action}>
             <input type="hidden" name="callbackUrl" value={callbackUrl} />
             <div className="space-y-6">
+                <div className="space-y-1">
+                    <Label htmlFor={nameId}>Name</Label>
+                    <Input
+                        id={nameId}
+                        type="text"
+                        placeholder="Name"
+                        name="name"
+                    />
+                </div>
                 <div className="space-y-1">
                     <Label htmlFor={emailId}>Email</Label>
                     <Input
@@ -38,28 +49,37 @@ const SignInForm = () => {
                         name="password"
                     />
                 </div>
+                <div className="space-y-1">
+                    <Label htmlFor={passwordId}>Confirm Password</Label>
+                    <Input
+                        id={confirmPasswordId}
+                        type="password"
+                        placeholder="Confirm Password"
+                        name="confirmPassword"
+                    />
+                </div>
                 <div>
                     <Button
                         type="submit"
                         className="w-full"
                         disabled={isPending}
                     >
-                        {isPending ? "Signing In..." : "Sign In"}
+                        {isPending ? "Signing Up..." : "Sign Up"}
                     </Button>
                 </div>
-                {!state?.success && state?.message && (
+                {/* {!state?.success && state?.message && (
                     <div className="text-center text-destructive">
                         <p>{state?.message}</p>
                     </div>
-                )}
+                )} */}
                 <div className="text-center text-sm text-muted-foreground">
-                    Don't have an account?{" "}
+                    Already have an account?{" "}
                     <Link
-                        href={ROUTES.SIGN_UP()}
+                        href={ROUTES.SIGN_IN()}
                         className="border-b border-transparent hover:border-gray-400"
                         target="_self"
                     >
-                        Sign Up
+                        Sign In
                     </Link>
                 </div>
             </div>
@@ -67,4 +87,4 @@ const SignInForm = () => {
     );
 };
 
-export default SignInForm;
+export default SignUpForm;
