@@ -4,8 +4,10 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "./db/prisma";
 import { ROUTES } from "./lib/constants/routes";
+import { Adapter } from "next-auth/adapters";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    adapter: PrismaAdapter(prisma),
     providers: [
         Credentials({
             credentials: {
@@ -39,7 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
-    adapter: PrismaAdapter(prisma),
+
     pages: {
         signIn: ROUTES.SIGN_IN(),
     },
@@ -48,10 +50,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         maxAge: 30 * 24 * 60 * 60,
     },
     callbacks: {
-        async session({ trigger, session, token }) {
-            if (token.sub) {
-                session.user.id = token.sub;
+        async jwt({ token, user }: any) {
+            if (user) {
+                token.role = user.role;
             }
+            return token;
+        },
+        async session({ trigger, session, token, user }: any) {
+            session.user.id = token.sub;
+            session.user.role = token.role;
+            session.user.name = token.name;
 
             if (trigger === "update") {
                 session.user.name = token.name;
