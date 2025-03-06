@@ -4,7 +4,6 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "./db/prisma";
 import { ROUTES } from "./lib/constants/routes";
-import { Adapter } from "next-auth/adapters";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     adapter: PrismaAdapter(prisma),

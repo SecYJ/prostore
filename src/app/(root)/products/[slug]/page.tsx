@@ -1,3 +1,4 @@
+import AddToCart from "@/components/shared/product/add-to-cart";
 import ProductImages from "@/components/shared/product/product-images";
 import ProductPrice from "@/components/shared/product/product-price";
 import { Badge } from "@/components/ui/badge";
@@ -70,9 +71,16 @@ const ProductDetailPage = async ({
                             </div>
                             {product.stock > 0 && (
                                 <div className="flex-center">
-                                    <Button className="w-full">
-                                        Add To cart
-                                    </Button>
+                                    <AddToCart
+                                        cartItem={{
+                                            name: product.name,
+                                            price: product.price,
+                                            productId: product.id,
+                                            image: product.images[0],
+                                            qty: product.stock,
+                                            slug: product.slug,
+                                        }}
+                                    />
                                 </div>
                             )}
                         </CardContent>
