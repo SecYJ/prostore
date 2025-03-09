@@ -64,8 +64,8 @@ export const cartItemSchema = z.object({
 });
 
 export const insertCartSchema = z.object({
-    item: z.array(cartItemSchema),
-    itemPrice: currency,
+    items: z.array(cartItemSchema),
+    itemsPrice: currency,
     totalPrice: currency,
     shippingPrice: currency,
     taxPrice: currency,

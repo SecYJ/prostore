@@ -77,7 +77,7 @@ const ProductDetailPage = async ({
                                             price: product.price,
                                             productId: product.id,
                                             image: product.images[0],
-                                            qty: product.stock,
+                                            qty: 1,
                                             slug: product.slug,
                                         }}
                                     />

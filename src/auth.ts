@@ -5,6 +5,8 @@ import Credentials from "next-auth/providers/credentials";
 import { prisma } from "./db/prisma";
 import { ROUTES } from "./lib/constants/routes";
 
+import { authConfig } from "./auth.config";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
     adapter: PrismaAdapter(prisma),
     providers: [
@@ -49,6 +51,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         maxAge: 30 * 24 * 60 * 60,
     },
     callbacks: {
+        ...authConfig.callbacks,
         async jwt({ token, user }: any) {
             if (user) {
                 token.role = user.role;

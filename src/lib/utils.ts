@@ -34,3 +34,9 @@ export const formatError = (error: any): string => {
         ? error.message
         : JSON.stringify(error);
 };
+
+export const round2 = (value: string | number) => {
+    const transformedValue = typeof value === "string" ? Number(value) : value;
+    // return Math.round((transformedValue + Number.EPSILON * 100) / 100);
+    return Math.round(Number(transformedValue.toFixed(2)));
+};
