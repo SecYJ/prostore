@@ -2,13 +2,14 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
+import { ROUTES } from "@/lib/constants/routes";
+import { formatError, round2 } from "@/lib/utils";
+import { cartItemSchema, insertCartSchema } from "@/lib/validators";
 import { CartItem } from "@/types";
+import { produce } from "immer";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { ROUTES } from "@/lib/constants/routes";
-import { convertToPlainObject, formatError, round2 } from "@/lib/utils";
-import { cartItemSchema, insertCartSchema } from "@/lib/validators";
-import { produce } from "immer";
+import { getProductById, getUserCart } from "../queries/cart";
 
 const calculatePrice = (cartItems: CartItem[]) => {
     // Calculate the total price of all items in the cart
@@ -126,33 +127,61 @@ export const addToCart = async (cartItem: CartItem) => {
     }
 };
 
-export const getUserCart = async () => {
+// NOTE: decrement product qty by 1, if less than 1 then remove it from cart
+export const decrementCartItemQty = async (productId: string) => {
     const session = await auth();
-    const sessionCartId = (await cookies()).get("sessionCartId")?.value;
 
-    if (!sessionCartId) throw new Error("Cart session not found");
+    try {
+        const product = await getProductById(productId);
+        if (!product) throw new Error("Product not found");
 
-    const userId = session?.user?.id ?? null;
-    const cart = await prisma.cart.findFirst({
-        where: userId ? { userId } : { sessionCartId },
-    });
+        const userCart = await getUserCart();
+        if (!userCart) throw new Error("Cart not found");
 
-    if (!cart) return null;
+        const cartItem = userCart.items.find(
+            (item) => item.productId === productId,
+        );
+        if (!cartItem) throw new Error("Item not found");
 
-    return convertToPlainObject({
-        ...cart,
-        items: cart.items as CartItem[],
-        itemsPrice: cart.itemsPrice.toString(),
-        totalPrice: cart.totalPrice.toString(),
-        shippingPrice: cart.shippingPrice.toString(),
-        taxPrice: cart.taxPrice.toString(),
-    });
-};
+        if (cartItem.qty - 1 < 1) {
+            const items = userCart.items.filter(
+                (item) => item.productId !== productId,
+            );
 
-export const getProductById = async (id: string) => {
-    const product = await prisma.product.findFirst({
-        where: { id },
-    });
+            await prisma.cart.update({
+                where: { id: userCart.id },
+                data: {
+                    items,
+                    ...calculatePrice(items),
+                },
+            });
+        } else {
+            const updatedCartItems = produce(userCart.items, (draft) => {
+                const itemIndex = draft.findIndex(
+                    (item) => item.productId === productId,
+                );
+                draft[itemIndex].qty -= 1;
+            });
 
-    return product;
+            await prisma.cart.update({
+                where: { id: userCart.id },
+                data: {
+                    items: updatedCartItems,
+                    ...calculatePrice(updatedCartItems),
+                },
+            });
+        }
+
+        revalidatePath(ROUTES.PRODUCT_DETAIL(product.slug));
+
+        return {
+            success: true,
+            message: `Product ${product.name} was removed from cart`,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: formatError(error),
+        };
+    }
 };

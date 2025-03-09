@@ -2,9 +2,10 @@ import AddToCart from "@/components/shared/product/add-to-cart";
 import ProductImages from "@/components/shared/product/product-images";
 import ProductPrice from "@/components/shared/product/product-price";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getSingleProduct } from "@/lib/actions/product.actions";
+import { getUserCart } from "@/lib/queries/cart";
+import { Cart } from "@/types";
 import { notFound } from "next/navigation";
 
 const ProductDetailPage = async ({
@@ -16,6 +17,8 @@ const ProductDetailPage = async ({
     const product = await getSingleProduct(slug);
 
     if (!product) notFound();
+
+    const cart = await getUserCart();
 
     return (
         <section>
@@ -72,6 +75,7 @@ const ProductDetailPage = async ({
                             {product.stock > 0 && (
                                 <div className="flex-center">
                                     <AddToCart
+                                        cart={cart ?? undefined}
                                         cartItem={{
                                             name: product.name,
                                             price: product.price,
