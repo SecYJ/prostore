@@ -5,4 +5,5 @@ export const ROUTES = {
     SIGN_UP: () => "/sign-up",
     PRODUCTS: () => "/products",
     PRODUCT_DETAIL: (slug: string) => `/products/${slug}`,
+    SHIPPING_ADDRESS: () => "/shipping-address",
 };

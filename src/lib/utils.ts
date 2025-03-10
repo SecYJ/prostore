@@ -40,3 +40,19 @@ export const round2 = (value: string | number) => {
     // return Math.round((transformedValue + Number.EPSILON * 100) / 100);
     return Math.round(Number(transformedValue.toFixed(2)));
 };
+
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+});
+
+export const formatCurrency = (value: number | string | null) => {
+    if (value == undefined) {
+        return "NaN";
+    }
+
+    return CURRENCY_FORMATTER.format(
+        typeof value === "number" ? value : Number(value),
+    );
+};
