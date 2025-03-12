@@ -18,8 +18,13 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { shippingAddressSchema } from "@/lib/validators";
+import { updateUserAddress } from "@/lib/actions/user.actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/constants/routes";
 
 const ShippingForm = ({ address }: { address: ShippingAddress }) => {
+    const router = useRouter();
     const form = useForm({
         resolver: zodResolver(shippingAddressSchema),
         defaultValues: address || shippingAddressDefaultValues,
@@ -27,9 +32,15 @@ const ShippingForm = ({ address }: { address: ShippingAddress }) => {
     const [isPending, startTransition] = useTransition();
 
     const onSubmit = (data: ShippingAddress) => {
-        startTransition(() => {
-            // Handle form submission
-            console.log(data);
+        startTransition(async () => {
+            const res = await updateUserAddress(data);
+
+            if (!res.success) {
+                toast.error(res.message);
+                return;
+            }
+
+            router.push(ROUTES.PAYMENT_METHOD());
         });
     };
 

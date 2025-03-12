@@ -6,4 +6,5 @@ export const ROUTES = {
     PRODUCTS: () => "/products",
     PRODUCT_DETAIL: (slug: string) => `/products/${slug}`,
     SHIPPING_ADDRESS: () => "/shipping-address",
+    PAYMENT_METHOD: () => "/payment-method",
 };
