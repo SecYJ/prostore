@@ -3,6 +3,8 @@ import { getUserCart } from "@/lib/queries/cart";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/lib/constants/routes";
 import { getUserById } from "@/lib/actions/user.actions";
+import ShippingForm from "./shipping-form";
+import { ShippingAddress } from "@/types";
 
 const ShippingAddressPage = async () => {
     const session = await auth();
@@ -17,9 +19,9 @@ const ShippingAddressPage = async () => {
     const user = await getUserById(userId);
 
     return (
-        <div>
-            <h1>Shipping Address</h1>
-        </div>
+        <>
+            <ShippingForm address={user.address as ShippingAddress} />
+        </>
     );
 };
 

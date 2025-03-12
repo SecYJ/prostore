@@ -1,0 +1,7 @@
+- Use pnpm for packager manager
+- Use type instead of interface for type definition
+- Use kebab-case for file name
+- Use arrow function in all scenario such as react components, anonymous functions, object methods
+- Use named export for react hook and types, for example React.useState is incorrect, use useState instead
+- Use default export for react components
+- Use named export for constants, utils, schema
